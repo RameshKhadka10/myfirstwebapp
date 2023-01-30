@@ -4,6 +4,8 @@ import com.ramesh.springboot.myfirstwebapp.todo.model.Todo;
 import com.ramesh.springboot.myfirstwebapp.todo.service.TodoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,7 +27,8 @@ public class TodoController {
 
     @GetMapping("list-todos")
     public String listAllTodos(ModelMap modelMap) {
-        List<Todo> todoList = todoService.findByUsername("ramesh");
+        String username = this.getLoggedinUsername();
+        List<Todo> todoList = todoService.findByUsername(username);
         modelMap.put("todos", todoList);
         return "listTodos";
     }
@@ -71,5 +74,10 @@ public class TodoController {
         todo.setUsername(username);
         todoService.updateTodo(todo);
         return "redirect:list-todos";
+    }
+
+    private String getLoggedinUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }

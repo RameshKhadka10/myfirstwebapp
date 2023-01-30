@@ -16,12 +16,12 @@ public class TodoService {
 
     static {
         todos.add(new Todo(++todosCount, "ramesh", "Learn spring", LocalDate.now().plusYears(1), false));
-        todos.add(new Todo(++todosCount, "ramesh", "Learn react.js", LocalDate.now().plusYears(1), false));
-        todos.add(new Todo(++todosCount, "ramesh", "Learn full stack ", LocalDate.now().plusYears(1), false));
+        todos.add(new Todo(++todosCount, "ganesh", "Learn react.js", LocalDate.now().plusYears(1), false));
+        todos.add(new Todo(++todosCount, "suresh", "Learn full stack ", LocalDate.now().plusYears(1), false));
     }
 
     public List<Todo> findByUsername(String username) {
-        return todos;
+        return todos.stream().filter(todo -> todo.getUsername().equals(username)).toList();
     }
 
     public void addTodo(String username, String description, LocalDate targetDate, boolean isDone) {
